@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Application.Authentication;
+using TaskFlow.Application.Common.Exceptions;
 using TaskFlow.Application.Interfaces;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Infrastructure.Persistence;
@@ -31,7 +32,7 @@ public class AuthService : IAuthService
 
         if (emailExists)
         {
-            throw new InvalidOperationException(
+            throw new ConflictException(
                 "A user with this email already exists.");
         }
 
