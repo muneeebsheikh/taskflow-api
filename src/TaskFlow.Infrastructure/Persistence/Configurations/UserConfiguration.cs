@@ -30,8 +30,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.PasswordHash)
             .IsRequired();
 
-        builder.Property(x => x.CreatedAt)
+        builder.Property(x => x.CreatedAtUtc)
+            .HasColumnName("CreatedAt")
             .IsRequired();
+
+        builder.Property(x => x.UpdatedAtUtc)
+            .HasColumnName("UpdatedAt");
 
         builder.HasMany(x => x.Projects)
             .WithOne(x => x.User)

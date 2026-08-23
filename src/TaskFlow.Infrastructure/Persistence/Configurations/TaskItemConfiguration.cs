@@ -29,8 +29,12 @@ public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(x => x.CreatedAt)
+        builder.Property(x => x.CreatedAtUtc)
+            .HasColumnName("CreatedAt")
             .IsRequired();
+
+        builder.Property(x => x.UpdatedAtUtc)
+            .HasColumnName("UpdatedAt");
 
         builder.HasIndex(x => x.ProjectId);
 

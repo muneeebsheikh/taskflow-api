@@ -19,8 +19,12 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
         builder.Property(x => x.Description)
             .HasMaxLength(2000);
 
-        builder.Property(x => x.CreatedAt)
+        builder.Property(x => x.CreatedAtUtc)
+            .HasColumnName("CreatedAt")
             .IsRequired();
+
+        builder.Property(x => x.UpdatedAtUtc)
+            .HasColumnName("UpdatedAt");
 
         builder.HasMany(x => x.Tasks)
             .WithOne(x => x.Project)
