@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using TaskFlow.Api.ExceptionHandling;
@@ -11,6 +12,7 @@ using TaskFlow.Application.Authentication.Validators;
 using TaskFlow.Application.Common;
 using TaskFlow.Application.Interfaces;
 using TaskFlow.Infrastructure;
+using TaskFlow.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +76,14 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<TaskFlowDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+}
 
 app.UseExceptionHandler();
 
